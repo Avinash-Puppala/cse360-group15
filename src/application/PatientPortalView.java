@@ -12,16 +12,20 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class PatientPortalView {
-    
+    private Main main;
+    private Stage stage;
     private Scene scene;
     
-    private Main main;  // A reference to the Main instance.
-
     public PatientPortalView(Main main) {
+        this.main = main;
+    }
+
+    public void start(Stage stage) {
     	
-    	this.main = main;
+    	this.stage = stage;
     	
         TabPane tabPane = new TabPane();
 
@@ -29,21 +33,9 @@ public class PatientPortalView {
         Tab profileTab = new Tab("Profile", createProfilePane());
         tabPane.getTabs().add(profileTab);
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    public PatientPortalView() {
-        VBox layout = new VBox();
-        // TODO: add UI components to layout
-=======
-//        // Logout button
-        Button logoutButton = new Button("Logout");
-//        logoutButton.setOnAction(e -> main.switchToLoginView());
->>>>>>> Stashed changes
-=======
         // Visit Summary tab
         Tab visitSummaryTab = new Tab("Visit Summary", createVisitSummaryPane());
         tabPane.getTabs().add(visitSummaryTab);
->>>>>>> dev
 
         // Messaging tab
         Tab messagingTab = new Tab("Messaging", createMessagingPane());
@@ -55,6 +47,8 @@ public class PatientPortalView {
 
         VBox layout = new VBox(tabPane, logoutButton);
         this.scene = new Scene(layout, 300, 250);
+        this.stage.setScene(this.scene);
+        this.stage.show();
     }
 
     public Scene getScene() {
@@ -105,4 +99,3 @@ public class PatientPortalView {
         return vBox;
     }
 }
-

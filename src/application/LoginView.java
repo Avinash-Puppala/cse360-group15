@@ -1,50 +1,60 @@
 package application;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class LoginView {
+    private static final String DOCTOR_USERNAME = "doc";
+    private static final String DOCTOR_PASSWORD = "docpass";
+    private static final String NURSE_USERNAME = "nurse";
+    private static final String NURSE_PASSWORD = "nursepass";
+    private static final String PATIENT_USERNAME = "patient";
+    private static final String PATIENT_PASSWORD = "patientpass";
+
     private Main main;
-    private TextField usernameField;
-    private PasswordField passwordField;
-    private Scene scene;
 
     public LoginView(Main main) {
         this.main = main;
-        this.usernameField = new TextField();
-        this.passwordField = new PasswordField();
-        usernameField.setPromptText("Username");
-        passwordField.setPromptText("Password");
+    }
+
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Login");
+
+        GridPane grid = new GridPane();
+
+        Label usernameLabel = new Label("Username:");
+        TextField usernameField = new TextField();
+        Label passwordLabel = new Label("Password:");
+        PasswordField passwordField = new PasswordField();
+        Label messageLabel = new Label();
 
         Button loginButton = new Button("Login");
-        loginButton.setOnAction(e -> login());
+        loginButton.setOnAction(e -> {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
 
-        VBox layout = new VBox(usernameField, passwordField, loginButton);
-        this.scene = new Scene(layout, 300, 250);
-    }
+            if (username.equals(DOCTOR_USERNAME) && password.equals(DOCTOR_PASSWORD)) {
+                main.switchToDoctorView();
+            } else if (username.equals(NURSE_USERNAME) && password.equals(NURSE_PASSWORD)) {
+                main.switchToNurseView();
+            } else if (username.equals(PATIENT_USERNAME) && password.equals(PATIENT_PASSWORD)) {
+                main.switchToPatientPortalView();
+            } else {
+                messageLabel.setText("Invalid username or password");
+            }
+        });
 
-    private void login() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        grid.add(usernameLabel, 0, 0);
+        grid.add(usernameField, 1, 0);
+        grid.add(passwordLabel, 0, 1);
+        grid.add(passwordField, 1, 1);
+        grid.add(loginButton, 1, 2);
+        grid.add(messageLabel, 0, 3, 2, 1);
 
-        if ("patient".equals(username) && "password".equals(password)) {
-            main.switchToPatientPortalView();
-        } else {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Login Failed");
-            alert.setHeaderText("Invalid Credentials");
-            alert.setContentText("The username or password you entered is incorrect. Please try again.");
-            alert.showAndWait();
-        }
-    }
-
-    public Scene getScene() {
-        return scene;
+        Scene scene = new Scene(grid, 300, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
-
