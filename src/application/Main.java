@@ -4,11 +4,13 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private LoginView loginView;
-    private PatientPortalView patientPortalView;
 
-    private Stage stage;
-    
+    // Views
+    private LoginView loginView;
+    private DoctorView doctorView;
+    private PatientPortalView patientPortalView;
+    private NurseView nurseView;
+
     public static void main(String[] args) {
         launch(args);
     }
