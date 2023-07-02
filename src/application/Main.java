@@ -29,6 +29,16 @@ public class Main extends Application {
         primaryStage.setScene(loginView.getScene());
         primaryStage.show();
     }
+<<<<<<< Updated upstream
+=======
+    
+    public void switchToPatientPortalView() {
+        // Create the patient portal view and switch the scene
+        PatientPortalView patientPortalView = new PatientPortalView(null);
+        Scene patientPortalScene = patientPortalView.getScene();
+        this.stage.setScene(patientPortalScene);
+    }
+>>>>>>> Stashed changes
 }
 
 

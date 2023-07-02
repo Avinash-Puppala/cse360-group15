@@ -1,6 +1,7 @@
 package application;
 
 import javafx.application.Application;
+<<<<<<< Updated upstream
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -313,3 +314,190 @@ public class NurseView extends Application {
 		primaryStage.setScene(loginScene);
 	}
 }
+=======
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+public class NurseView extends Application {
+    private Main app;
+    private BorderPane rootLayout;
+
+    public NurseView(Main app) {
+        this.app = app;
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Nurse View");
+
+        rootLayout = new BorderPane();
+
+        // Company Logo
+        // Replace "logoImage" with the actual image node representing your company logo
+        ImageView logoImage = new ImageView("path/to/company_logo.png");
+        rootLayout.setTop(logoImage);
+
+        // Office Name
+        Label officeNameLabel = new Label("Sun Devil Pediatrics - Nurse Portal");
+        rootLayout.setCenter(officeNameLabel);
+
+        // Navigation/Dashboard Menu
+        VBox menu = new VBox();
+        menu.setSpacing(10);
+
+        Button checkInButton = new Button("Check-In Patient");
+        checkInButton.setOnAction(e -> showCheckIn());
+
+        Button updateInfoButton = new Button("Update Patient Records");
+        updateInfoButton.setOnAction(e -> showUpdateInfo());
+
+        Button historyButton = new Button("View Patient History");
+        historyButton.setOnAction(e -> showHistory());
+
+        Button messagesButton = new Button("View Messages");
+        messagesButton.setOnAction(e -> showMessages());
+
+        Button logoutButton = new Button("Logout");
+        logoutButton.setOnAction(e -> handleLogout());
+
+        menu.getChildren().addAll(checkInButton, updateInfoButton, historyButton, messagesButton, logoutButton);
+        rootLayout.setLeft(menu);
+
+        Scene scene = new Scene(rootLayout, 800, 600);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void showCheckIn() {
+        // Check-in Patient Section
+        Label patientIdLabel = new Label("Patient ID:");
+        TextField patientIdField = new TextField();
+        Button searchButton = new Button("Search");
+
+        Label weightLabel = new Label("Weight:");
+        TextField weightField = new TextField();
+
+        Label heightLabel = new Label("Height:");
+        TextField heightField = new TextField();
+
+        Label temperatureLabel = new Label("Body Temperature:");
+        TextField temperatureField = new TextField();
+
+        Label bloodPressureLabel = new Label("Blood Pressure:");
+        TextField bloodPressureField = new TextField();
+
+        Label allergiesLabel = new Label("Known Allergies:");
+        TextField allergiesField = new TextField();
+
+        Label healthConcernsLabel = new Label("Health Concerns:");
+        TextField healthConcernsField = new TextField();
+
+        Button submitButton = new Button("Submit");
+
+        VBox checkInForm = new VBox(10, patientIdLabel, patientIdField, searchButton, weightLabel, weightField,
+                heightLabel, heightField, temperatureLabel, temperatureField, bloodPressureLabel, bloodPressureField,
+                allergiesLabel, allergiesField, healthConcernsLabel, healthConcernsField, submitButton);
+
+        rootLayout.setCenter(checkInForm);
+    }
+
+    private void showUpdateInfo() {
+        // Update Patient Record Section
+        Label patientIdLabel = new Label("Patient ID:");
+        TextField patientIdField = new TextField();
+        Button searchButton = new Button("Search");
+
+        Label firstNameLabel = new Label("First Name:");
+        TextField firstNameField = new TextField();
+
+        Label lastNameLabel = new Label("Last Name:");
+        TextField lastNameField = new TextField();
+
+        Label dobLabel = new Label("Date of Birth:");
+        TextField dobField = new TextField();
+
+        Label contactNumberLabel = new Label("Contact Number:");
+        TextField contactNumberField = new TextField();
+
+        Label emailLabel = new Label("Email:");
+        TextField emailField = new TextField();
+
+        Label insuranceProviderLabel = new Label("Insurance Provider:");
+        TextField insuranceProviderField = new TextField();
+
+        Label insurancePolicyNumberLabel = new Label("Insurance Policy Number:");
+        TextField insurancePolicyNumberField = new TextField();
+
+        Label pharmacyDetailsLabel = new Label("Pharmacy Details:");
+        TextField pharmacyDetailsField = new TextField();
+
+        Button updateButton = new Button("Update");
+
+        VBox updateInfoForm = new VBox(10, patientIdLabel, patientIdField, searchButton, firstNameLabel, firstNameField,
+                lastNameLabel, lastNameField, dobLabel, dobField, contactNumberLabel, contactNumberField, emailLabel,
+                emailField, insuranceProviderLabel, insuranceProviderField, insurancePolicyNumberLabel,
+                insurancePolicyNumberField, pharmacyDetailsLabel, pharmacyDetailsField, updateButton);
+
+        rootLayout.setCenter(updateInfoForm);
+    }
+
+    private void showHistory() {
+        // View Patient History Section
+        Label patientIdLabel = new Label("Patient ID:");
+        TextField patientIdField = new TextField();
+        Button searchButton = new Button("Search");
+
+        TableView<VisitHistory> historyTable = new TableView<>();
+
+        TableColumn<VisitHistory, String> visitDateColumn = new TableColumn<>("Visit Date");
+        visitDateColumn.setCellValueFactory(new PropertyValueFactory<>("visitDate"));
+
+        TableColumn<VisitHistory, String> examinationFindingsColumn = new TableColumn<>("Examination Findings");
+        examinationFindingsColumn.setCellValueFactory(new PropertyValueFactory<>("examinationFindings"));
+
+        TableColumn<VisitHistory, String> diagnosisColumn = new TableColumn<>("Diagnosis");
+        diagnosisColumn.setCellValueFactory(new PropertyValueFactory<>("diagnosis"));
+
+        TableColumn<VisitHistory, String> medicationColumn = new TableColumn<>("Prescribed Medication");
+        medicationColumn.setCellValueFactory(new PropertyValueFactory<>("medication"));
+
+        historyTable.getColumns().addAll(visitDateColumn, examinationFindingsColumn, diagnosisColumn, medicationColumn);
+
+        VBox historyView = new VBox(10, patientIdLabel, patientIdField, searchButton, historyTable);
+        rootLayout.setCenter(historyView);
+    }
+
+    private void showMessages() {
+        // Messaging Section
+        Button newMessageButton = new Button("New Message");
+
+        TableView<Message> messageTable = new TableView<>();
+
+        TableColumn<Message, String> senderColumn = new TableColumn<>("Sender");
+        senderColumn.setCellValueFactory(new PropertyValueFactory<>("sender"));
+
+        TableColumn<Message, String> subjectColumn = new TableColumn<>("Subject");
+        subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
+
+        TableColumn<Message, String> dateColumn = new TableColumn<>("Date");
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        messageTable.getColumns().addAll(senderColumn, subjectColumn, dateColumn);
+
+        VBox messagesView = new VBox(10, newMessageButton, messageTable);
+        rootLayout.setCenter(messagesView);
+    }
+
+    private void handleLogout() {
+        Stage stage = (Stage) app.getPrimaryStage();
+        new LoginPage(app).start(stage);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+>>>>>>> Stashed changes
