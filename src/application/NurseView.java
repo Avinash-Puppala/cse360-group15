@@ -1,6 +1,5 @@
 package application;
 
-import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -8,42 +7,25 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class NurseView extends Application {
+public class NurseView {
 
-	private Stage primaryStage;
+    private Main main;
+    private Stage nurseStage;
+    private Scene scene;
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+    public NurseView(Main main) {
+        this.main = main;
+    }
 
-	@Override
-	public void start(Stage primaryStage) {
-		this.primaryStage = primaryStage;
-		primaryStage.setTitle("Sun Devil Pediatrics System");
+    public void start(Stage stage) {
+        this.nurseStage = stage;
+        showNursePortal();
+    }
 
-		// Create labels and text fields for login screen
-		Label usernameLabel = new Label("Username:");
-		TextField usernameField = new TextField();
-		Label passwordLabel = new Label("Password:");
-		PasswordField passwordField = new PasswordField();
-		Button loginButton = new Button("Login");
-
-		// Set button action for login
-		loginButton.setOnAction(event -> {
-			showNursePortal();
-		});
-
-		// Create a layout for the login screen
-		VBox loginLayout = new VBox(10);
-		loginLayout.setPadding(new Insets(10));
-		loginLayout.getChildren().addAll(usernameLabel, usernameField, passwordLabel, passwordField, loginButton);
-
-		// Set the scene for the login screen
-		Scene loginScene = new Scene(loginLayout, 300, 200);
-		primaryStage.setScene(loginScene);
-		primaryStage.show();
-	}
-
+    public Scene getScene() {
+        return this.scene;
+    }
+    
 	private void showNursePortal() {
 		// Create labels and buttons for Nurse Portal
 		Label officeNameLabel = new Label("Sun Devil Pediatrics - Nurse Portal");
@@ -71,7 +53,7 @@ public class NurseView extends Application {
 		});
 
 		logoutButton.setOnAction(event -> {
-			showLoginScreen();
+			main.switchToLoginView();
 		});
 
 		// Create a layout for the Nurse Portal screen
@@ -82,8 +64,10 @@ public class NurseView extends Application {
 
 		// Set the scene for the Nurse Portal screen
 		Scene scene = new Scene(layout, 400, 300);
-		primaryStage.setTitle("Nurse Portal");
-		primaryStage.setScene(scene);
+        this.scene = scene;
+        nurseStage.setTitle("Nurse Portal");
+        nurseStage.setScene(scene);
+        nurseStage.show();
 	}
 
 	private void showCheckInSection() {
@@ -288,28 +272,4 @@ public class NurseView extends Application {
 		messagingStage.show();
 	}
 
-	private void showLoginScreen() {
-		primaryStage.setTitle("Sun Devil Pediatrics System");
-
-		// Create labels and text fields for login screen
-		Label usernameLabel = new Label("Username:");
-		TextField usernameField = new TextField();
-		Label passwordLabel = new Label("Password:");
-		PasswordField passwordField = new PasswordField();
-		Button loginButton = new Button("Login");
-
-		// Set button action for login
-		loginButton.setOnAction(event -> {
-			showNursePortal();
-		});
-
-		// Create a layout for the login screen
-		VBox loginLayout = new VBox(10);
-		loginLayout.setPadding(new Insets(10));
-		loginLayout.getChildren().addAll(usernameLabel, usernameField, passwordLabel, passwordField, loginButton);
-
-		// Set the scene for the login screen
-		Scene loginScene = new Scene(loginLayout, 300, 200);
-		primaryStage.setScene(loginScene);
-	}
 }

@@ -1,36 +1,43 @@
 package application;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
-    // Views
+    private Stage primaryStage;
     private LoginView loginView;
-    private DoctorView doctorView;
     private PatientPortalView patientPortalView;
+    private DoctorView doctorView;
     private NurseView nurseView;
+
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.loginView = new LoginView(this);
+        this.patientPortalView = new PatientPortalView(this);
+        this.doctorView = new DoctorView(this);
+        this.nurseView = new NurseView(this);
+
+        switchToLoginView();
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    public void switchToLoginView() {
+        loginView.start(primaryStage);
+    }
 
-        // Create the views
-        loginView = new LoginView();
-        doctorView = new DoctorView();
-        patientPortalView = new PatientPortalView();
-        nurseView = new NurseView();
+    public void switchToPatientPortalView() {
+        patientPortalView.start(primaryStage);
+    }
 
-        // Initially, show the login view
-        primaryStage.setScene(loginView.getScene());
-        primaryStage.show();
+    public void switchToDoctorView() {
+        doctorView.start(primaryStage);
+    }
+
+    public void switchToNurseView() {
+        nurseView.start(primaryStage);
     }
 }
-
-
-
-
