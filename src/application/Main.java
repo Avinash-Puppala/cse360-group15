@@ -9,11 +9,13 @@ public class Main extends Application {
     private PatientPortalView patientPortalView;
     private DoctorView doctorView;
     private NurseView nurseView;
+    private UserManager userManager;  // Added this line to declare userManager
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.loginView = new LoginView(this);
+        this.userManager = new UserManager();  // Initialized userManager here
+        this.loginView = new LoginView(this, userManager);  // Passing userManager instance to LoginView
         this.patientPortalView = new PatientPortalView(this);
         this.doctorView = new DoctorView(this);
         this.nurseView = new NurseView(this);

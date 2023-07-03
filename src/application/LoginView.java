@@ -6,17 +6,12 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class LoginView {
-    private static final String DOCTOR_USERNAME = "doc";
-    private static final String DOCTOR_PASSWORD = "docpass";
-    private static final String NURSE_USERNAME = "nurse";
-    private static final String NURSE_PASSWORD = "nursepass";
-    private static final String PATIENT_USERNAME = "patient";
-    private static final String PATIENT_PASSWORD = "patientpass";
-
     private Main main;
+    private UserManager userManager; // Instance for managing users
 
-    public LoginView(Main main) {
+    public LoginView(Main main, UserManager userManager) {
         this.main = main;
+        this.userManager = userManager; // Initialize user manager
     }
 
     public void start(Stage primaryStage) {
@@ -35,15 +30,27 @@ public class LoginView {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
-            if (username.equals(DOCTOR_USERNAME) && password.equals(DOCTOR_PASSWORD)) {
-                main.switchToDoctorView();
-            } else if (username.equals(NURSE_USERNAME) && password.equals(NURSE_PASSWORD)) {
-                main.switchToNurseView();
-            } else if (username.equals(PATIENT_USERNAME) && password.equals(PATIENT_PASSWORD)) {
-                main.switchToPatientPortalView();
+            if(userManager.authenticate(username, password)) {
+                String role = userManager.getUserRole(username);
+                switch (role) {
+                    case "doctor":
+                        main.switchToDoctorView();
+                        break;
+                    case "nurse":
+                        main.switchToNurseView();
+                        break;
+                    case "patient":
+                        main.switchToPatientPortalView();
+                        break;
+                }
             } else {
                 messageLabel.setText("Invalid username or password");
             }
+        });
+
+        Button newUserButton = new Button("Create New User");
+        newUserButton.setOnAction(e -> {
+            showCreateUserScreen(primaryStage);
         });
 
         grid.add(usernameLabel, 0, 0);
@@ -52,9 +59,46 @@ public class LoginView {
         grid.add(passwordField, 1, 1);
         grid.add(loginButton, 1, 2);
         grid.add(messageLabel, 0, 3, 2, 1);
+        grid.add(newUserButton, 1, 3); // added create new user button
 
         Scene scene = new Scene(grid, 300, 200);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void showCreateUserScreen(Stage primaryStage) {
+        GridPane grid = new GridPane();
+
+        Label roleLabel = new Label("Role:");
+        ComboBox<String> roleField = new ComboBox<>();
+        roleField.getItems().addAll("doctor", "nurse", "patient");
+
+        Label usernameLabel = new Label("Username:");
+        TextField usernameField = new TextField();
+        Label passwordLabel = new Label("Password:");
+        PasswordField passwordField = new PasswordField();
+        Label messageLabel = new Label();
+
+        Button createButton = new Button("Create");
+        createButton.setOnAction(e -> {
+            String role = roleField.getValue();
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+
+            userManager.createUser(role, username, password);
+            main.switchToLoginView(); // switch back to login view after creating a user
+        });
+
+        grid.add(roleLabel, 0, 0);
+        grid.add(roleField, 1, 0);
+        grid.add(usernameLabel, 0, 1);
+        grid.add(usernameField, 1, 1);
+        grid.add(passwordLabel, 0, 2);
+        grid.add(passwordField, 1, 2);
+        grid.add(createButton, 1, 3);
+        grid.add(messageLabel, 0, 4, 2, 1);
+
+        Scene scene = new Scene(grid, 300, 200);
+        primaryStage.setScene(scene);
     }
 }
