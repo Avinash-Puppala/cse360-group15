@@ -47,7 +47,10 @@ public class DoctorView {
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(e -> main.switchToLoginView());
 
-        layout.getChildren().addAll(examineButton, prescribeButton, historyButton, logoutButton);
+        Button MessageButton = new Button("Message");
+        MessageButton.setOnAction(e -> message());
+
+        layout.getChildren().addAll(examineButton, prescribeButton, historyButton, MessageButton, logoutButton);
         rootLayout.setLeft(layout);
 
         scene = new Scene(rootLayout, 300, 200);
@@ -229,6 +232,81 @@ public class DoctorView {
         PrescribeStage.setScene(PrescribeScene);
         PrescribeStage.show();
 
+
+    }
+
+    private void message()
+    {
+        Stage msgstage = new Stage();
+        TabPane tabpane = new TabPane();
+
+        Tab NewMsg = new Tab("New Message", NewMessage());
+        Tab Inbox = new Tab("Inbox", Inbox());
+
+        tabpane.getTabs().add(NewMsg);
+        tabpane.getTabs().add(Inbox);
+
+        msgstage.setTitle("Message");
+        msgstage.setScene(new Scene(tabpane));
+        msgstage.show();
+    }
+
+    private GridPane NewMessage()
+    {
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
+        
+        Label l_Recipients = new Label("Recipients:  ");
+        Label l_subject = new Label("Subject");
+
+        TextArea Recipients = new TextArea();
+        TextArea subject = new TextArea();
+        TextArea Content = new TextArea();
+
+        Recipients.setPromptText("To: ");
+        subject.setPromptText("subject");
+        Content.setPromptText("Content");
+
+        Button Send = new Button("Send");
+
+        Recipients.setPrefSize(400, 30);
+        subject.setPrefSize(400, 30);
+        Content.setPrefSize(400, 500);
+
+        vbox.getChildren().addAll(l_Recipients,Recipients,l_subject,subject,Content,Send);
+
+
+        GridPane gridpane = new GridPane();
+
+        gridpane.add(vbox,0,0);
+
+        return gridpane;
+    }
+
+    private AnchorPane Inbox()
+    {
+
+        TableView Inbox = new TableView();
+        TableColumn<String, String> From = new TableColumn<>("From");
+        TableColumn<String, String> Subject = new TableColumn<>("Subject");
+        TableColumn<String, String> Context = new TableColumn<>("Context");
+
+        From.prefWidthProperty().bind(Inbox.widthProperty().multiply(0.3));
+        Subject.prefWidthProperty().bind(Inbox.widthProperty().multiply(0.3));
+        Context.prefWidthProperty().bind(Inbox.widthProperty().multiply(0.4));
+
+        Inbox.getColumns().addAll(From,Subject,Context);
+
+        AnchorPane anchorPane = new AnchorPane(Inbox);
+
+        AnchorPane.setTopAnchor(Inbox, 0.0);
+        AnchorPane.setLeftAnchor(Inbox, 0.0);
+        AnchorPane.setRightAnchor(Inbox, 0.0);
+        AnchorPane.setBottomAnchor(Inbox, 0.0);
+
+
+
+        return anchorPane;
 
     }
 
