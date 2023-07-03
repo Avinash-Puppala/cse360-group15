@@ -17,9 +17,6 @@ public class DoctorView {
     private static final String PATIENT_ID = "12345";
     private Label messageLabel;
     private boolean result;
-    private TextField Findings;
-    private TextField Diagnosis;
-    private TextField Recommendations;
 
     public DoctorView(Main main) 
     {
@@ -83,43 +80,65 @@ public class DoctorView {
 
         messageLabel = new Label();
         grid.add(messageLabel, 0, 3, 2, 1);
-
-        SearchPatient.setOnAction(event -> { result = Searchpatient();});
         
 
-        if(result == true)
-        {
-            Label L_findings = new Label("Physical Examination Finding");
-            grid.add(L_findings, 0, 4);
-            Findings = new TextField(); 
-            Findings.setPrefSize(200, 1000);
-            grid.add(Findings,0,5);
+        Label L_findings = new Label("Physical Examination Finding");
+        Label L_diagnosis = new Label("Diagnosis");
+        Label L_recommendations = new Label("Recommendations");
+
+        TextField Findings = new TextField(); 
+        TextField Diagnosis = new TextField();
+        TextField Recommendations = new TextField();
+
+        Button submit = new Button("Submit");
+
+        grid.add(L_findings, 0, 4);
+
+        L_findings.setVisible(false);
+        L_diagnosis.setVisible(false);
+        L_recommendations.setVisible(false);
+        Findings.setVisible(false);
+        Diagnosis.setVisible(false);
+        Recommendations.setVisible(false);
+
+        SearchPatient.setOnAction(event -> { 
+            result = Searchpatient();
+        });
+
+
+        // if(result == true)
+        // {
+        //     Label L_findings = new Label("Physical Examination Finding");
+        //     grid.add(L_findings, 0, 4);
+        //     Findings = new TextField(); 
+        //     Findings.setPrefSize(200, 1000);
+        //     grid.add(Findings,0,5);
             
 
-            Label L_diagnosis = new Label("Diagnosis");
-            grid.add(L_diagnosis, 1, 4);
-            Diagnosis = new TextField();
-            Diagnosis.setPrefSize(200, 1000);
-            grid.add(Diagnosis,1,5);
+        //     Label L_diagnosis = new Label("Diagnosis");
+        //     grid.add(L_diagnosis, 1, 4);
+        //     Diagnosis = new TextField();
+        //     Diagnosis.setPrefSize(200, 1000);
+        //     grid.add(Diagnosis,1,5);
             
-            Label L_recommendations = new Label("Recommendations");
-            grid.add(L_recommendations, 2, 4);
-            Recommendations = new TextField();
-            Recommendations.setPrefSize(200, 1000);
-            grid.add(Recommendations,2,5);
+        //     Label L_recommendations = new Label("Recommendations");
+        //     grid.add(L_recommendations, 2, 4);
+        //     Recommendations = new TextField();
+        //     Recommendations.setPrefSize(200, 1000);
+        //     grid.add(Recommendations,2,5);
 
-            Button submit = new Button("Submit");
-            grid.add(submit, 1, 3);
-            Scene dialogScene = new Scene(grid, 600, 800);
-            dialog.setScene(dialogScene);
-            dialog.show();
-        }
-        else{
+        //     Button submit = new Button("Submit");
+        //     grid.add(submit, 1, 3);
+        //     Scene dialogScene = new Scene(grid, 600, 800);
+        //     dialog.setScene(dialogScene);
+        //     dialog.show();
+        // }
         Scene dialogScene = new Scene(grid, 600, 800);
         dialog.setScene(dialogScene);
         dialog.show();
-        }
     }
+
+
     
     private boolean Searchpatient()
     {
