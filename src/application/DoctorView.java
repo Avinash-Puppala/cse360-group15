@@ -92,7 +92,18 @@ public class DoctorView {
 
         Button submit = new Button("Submit");
 
+        Findings.setPrefSize(200, 1000);
+        Diagnosis.setPrefSize(200, 1000);
+        Recommendations.setPrefSize(200, 1000);
+        
         grid.add(L_findings, 0, 4);
+        grid.add(Findings,0,5);
+        grid.add(L_diagnosis, 1, 4);
+        grid.add(Diagnosis,1,5);
+        grid.add(L_recommendations, 2, 4);
+        grid.add(Recommendations,2,5);
+        grid.add(submit, 1, 3);
+
 
         L_findings.setVisible(false);
         L_diagnosis.setVisible(false);
@@ -100,39 +111,19 @@ public class DoctorView {
         Findings.setVisible(false);
         Diagnosis.setVisible(false);
         Recommendations.setVisible(false);
+        submit.setVisible(false);
 
         SearchPatient.setOnAction(event -> { 
             result = Searchpatient();
+            L_findings.setVisible(result);
+            L_diagnosis.setVisible(result);
+            L_recommendations.setVisible(result);
+            Findings.setVisible(result);
+            Diagnosis.setVisible(result);
+            Recommendations.setVisible(result);
+            submit.setVisible(result);
         });
 
-
-        // if(result == true)
-        // {
-        //     Label L_findings = new Label("Physical Examination Finding");
-        //     grid.add(L_findings, 0, 4);
-        //     Findings = new TextField(); 
-        //     Findings.setPrefSize(200, 1000);
-        //     grid.add(Findings,0,5);
-            
-
-        //     Label L_diagnosis = new Label("Diagnosis");
-        //     grid.add(L_diagnosis, 1, 4);
-        //     Diagnosis = new TextField();
-        //     Diagnosis.setPrefSize(200, 1000);
-        //     grid.add(Diagnosis,1,5);
-            
-        //     Label L_recommendations = new Label("Recommendations");
-        //     grid.add(L_recommendations, 2, 4);
-        //     Recommendations = new TextField();
-        //     Recommendations.setPrefSize(200, 1000);
-        //     grid.add(Recommendations,2,5);
-
-        //     Button submit = new Button("Submit");
-        //     grid.add(submit, 1, 3);
-        //     Scene dialogScene = new Scene(grid, 600, 800);
-        //     dialog.setScene(dialogScene);
-        //     dialog.show();
-        // }
         Scene dialogScene = new Scene(grid, 600, 800);
         dialog.setScene(dialogScene);
         dialog.show();
@@ -170,17 +161,11 @@ public class DoctorView {
         grid.setVgap(5);
         grid.setHgap(5);
 
-        HBox hbox = new HBox();
+        HBox hbox = new HBox(10);
 
         Label idLabel = new Label("Patient ID:");
-        //grid.add(idLabel, 0, 0);
-
-
         idField = new TextField();
-        //grid.add(idField, 1, 0);
-
         Button SearchPatient = new Button("Search");
-        //grid.add(SearchPatient,2,0);
 
         hbox.getChildren().addAll(idLabel,idField,SearchPatient);
         grid.add(hbox,0,0);
@@ -190,19 +175,30 @@ public class DoctorView {
 
         SearchPatient.setOnAction(event -> { result = Searchpatient();});
 
-        if(result)
-        {
-            TableView History = new TableView();
-            TableColumn<String, String> dateColumn = new TableColumn<>("Visit Date");
-            TableColumn<String, String> findingsColumn = new TableColumn<>("Examination Findings");
-            TableColumn<String, String> diagnosisColumn = new TableColumn<>("Diagnosis");
-            TableColumn<String, String> medicationColumn = new TableColumn<>("Prescribed Medication");
-            History.getColumns().addAll(dateColumn, findingsColumn, diagnosisColumn, medicationColumn);
-            History.setPrefSize(700, 400);
+        TableView History = new TableView();
+        TableColumn<String, String> dateColumn = new TableColumn<>("Visit Date");
+        TableColumn<String, String> findingsColumn = new TableColumn<>("Examination Findings");
+        TableColumn<String, String> diagnosisColumn = new TableColumn<>("Diagnosis");
+        TableColumn<String, String> medicationColumn = new TableColumn<>("Prescribed Medication");
 
-            grid.add(History,0,2);
 
-        }
+        History.getColumns().addAll(dateColumn, findingsColumn, diagnosisColumn, medicationColumn);
+        History.setPrefWidth(800);
+
+        dateColumn.prefWidthProperty().bind(History.widthProperty().multiply(0.25));
+        findingsColumn.prefWidthProperty().bind(History.widthProperty().multiply(0.25));
+        diagnosisColumn.prefWidthProperty().bind(History.widthProperty().multiply(0.25));
+        medicationColumn.prefWidthProperty().bind(History.widthProperty().multiply(0.25));
+
+        grid.add(History,0,2);
+
+        History.setVisible(false);
+
+        SearchPatient.setOnAction(event -> { 
+            result = Searchpatient();
+            History.setVisible(result);
+        });
+        
         Scene dialogScene = new Scene(grid, 800, 600);
         dialog.setScene(dialogScene);
         dialog.show();
