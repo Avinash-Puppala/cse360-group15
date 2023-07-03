@@ -2,18 +2,15 @@ package application;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 import javafx.application.Platform;
 
 public class DoctorView {
 
+    private Main main;
+    private Stage DoctorStage;
     private BorderPane rootLayout;
     private Scene scene;
     private TextField idField;
@@ -24,7 +21,17 @@ public class DoctorView {
     private TextField Diagnosis;
     private TextField Recommendations;
 
-    public DoctorView() 
+    public DoctorView(Main main) 
+    {
+        this.main = main;
+    }
+
+    public void start(Stage stage)
+    {
+        this.DoctorStage = stage;
+        Doctor();
+    }
+    public void Doctor()
     {
         VBox layout = new VBox();
         rootLayout = new BorderPane();
@@ -35,18 +42,21 @@ public class DoctorView {
         examineButton.setOnAction(e -> showExamine());
 
         Button prescribeButton = new Button("Prescribe Medication");
-        //prescribeButton.setOnAction(e -> showPrescribe());
+        prescribeButton.setOnAction(e -> showPrescribe());
 
         Button historyButton = new Button("View Patient History");
-        //historyButton.setOnAction(e -> showHistory());
+        historyButton.setOnAction(e -> showHistory());
 
         Button logoutButton = new Button("Logout");
-        //logoutButton.setOnAction(e -> handleLogout());
+        logoutButton.setOnAction(e -> main.switchToLoginView());
 
         layout.getChildren().addAll(examineButton, prescribeButton, historyButton, logoutButton);
         rootLayout.setLeft(layout);
 
         scene = new Scene(rootLayout, 300, 200);
+        DoctorStage.setTitle("Doctor View");
+        DoctorStage.setScene(scene);
+        DoctorStage.show();
     }
 
     private void showExamine() 
@@ -79,22 +89,36 @@ public class DoctorView {
 
         if(result == true)
         {
-            Findings = new TextField("Physical Examination Findings");
+            Label L_findings = new Label("Physical Examination Finding");
+            grid.add(L_findings, 0, 4);
+            Findings = new TextField(); 
             Findings.setPrefSize(200, 1000);
-            grid.add(Findings,0,4);
+            grid.add(Findings,0,5);
             
 
-            Diagnosis = new TextField("Diagnosis");
+            Label L_diagnosis = new Label("Diagnosis");
+            grid.add(L_diagnosis, 1, 4);
+            Diagnosis = new TextField();
             Diagnosis.setPrefSize(200, 1000);
-            grid.add(Diagnosis,1,4);
-
-            Recommendations = new TextField("Recommendations");
+            grid.add(Diagnosis,1,5);
+            
+            Label L_recommendations = new Label("Recommendations");
+            grid.add(L_recommendations, 2, 4);
+            Recommendations = new TextField();
             Recommendations.setPrefSize(200, 1000);
-            grid.add(Recommendations,2,4);
+            grid.add(Recommendations,2,5);
+
+            Button submit = new Button("Submit");
+            grid.add(submit, 1, 3);
+            Scene dialogScene = new Scene(grid, 600, 800);
+            dialog.setScene(dialogScene);
+            dialog.show();
         }
+        else{
         Scene dialogScene = new Scene(grid, 600, 800);
         dialog.setScene(dialogScene);
         dialog.show();
+        }
     }
     
     private boolean Searchpatient()
@@ -115,8 +139,88 @@ public class DoctorView {
 
     }
 
+    private void showHistory()
+    {
+        final Stage dialog = new Stage();
+        dialog.setTitle("Patient History");
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        //dialog.initOwner(rootLayout);
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        HBox hbox = new HBox();
+
+        Label idLabel = new Label("Patient ID:");
+        //grid.add(idLabel, 0, 0);
+
+
+        idField = new TextField();
+        //grid.add(idField, 1, 0);
+
+        Button SearchPatient = new Button("Search");
+        //grid.add(SearchPatient,2,0);
+
+        hbox.getChildren().addAll(idLabel,idField,SearchPatient);
+        grid.add(hbox,0,0);
+
+        messageLabel = new Label();
+        grid.add(messageLabel, 0, 1, 2, 1);
+
+        SearchPatient.setOnAction(event -> { result = Searchpatient();});
+
+        if(result)
+        {
+            TableView History = new TableView();
+            TableColumn<String, String> dateColumn = new TableColumn<>("Visit Date");
+            TableColumn<String, String> findingsColumn = new TableColumn<>("Examination Findings");
+            TableColumn<String, String> diagnosisColumn = new TableColumn<>("Diagnosis");
+            TableColumn<String, String> medicationColumn = new TableColumn<>("Prescribed Medication");
+            History.getColumns().addAll(dateColumn, findingsColumn, diagnosisColumn, medicationColumn);
+            History.setPrefSize(700, 400);
+
+            grid.add(History,0,2);
+
+        }
+        Scene dialogScene = new Scene(grid, 800, 600);
+        dialog.setScene(dialogScene);
+        dialog.show();
+    }
+
+    private void showPrescribe()
+    {
+        Stage PrescribeStage = new Stage();
+        Scene PrescribeScene;
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
+
+        Label PatientID = new Label("Patient ID");
+        Label MedicationName = new Label("Medication Name");
+        Label Dosage = new Label("Dosage");
+        Label Instruction = new Label("Instruction");
+
+        TextField ID = new TextField();
+        TextField MedicName = new TextField();
+        TextField Dos = new TextField();
+        TextField Inst = new TextField();
+
+        Button Submit = new Button("submit");
+
+        vbox.getChildren().addAll(PatientID,ID,MedicationName,MedicName,Dosage,Dos,Instruction,Inst,Submit);
+        PrescribeScene = new Scene(vbox,400,300);
+        PrescribeStage.setTitle("Prescribe");
+        PrescribeStage.setScene(PrescribeScene);
+        PrescribeStage.show();
+
+
+    }
+
+
+
     public Scene getScene() {
-        return scene;
+        return this.scene;
     }
 }
 
