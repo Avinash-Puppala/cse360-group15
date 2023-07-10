@@ -30,16 +30,18 @@ public class LoginView {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
-            if(userManager.authenticate(username, password)) {
+            boolean authenticated = userManager.authenticate(username, password);
+
+            if (authenticated) {
                 String role = userManager.getUserRole(username);
                 switch (role) {
-                    case "doctor":
+                    case "Doctor":
                         main.switchToDoctorView();
                         break;
-                    case "nurse":
+                    case "Nurse":
                         main.switchToNurseView();
                         break;
-                    case "patient":
+                    case "Patient":
                         main.switchToPatientPortalView();
                         break;
                 }
@@ -47,6 +49,7 @@ public class LoginView {
                 messageLabel.setText("Invalid username or password");
             }
         });
+
 
         Button newUserButton = new Button("Create New User");
         newUserButton.setOnAction(e -> {
@@ -85,9 +88,15 @@ public class LoginView {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
-            userManager.createUser(role, username, password);
-            main.switchToLoginView(); // switch back to login view after creating a user
+            boolean success = userManager.createUser(role, username, password);
+
+            if (success) {
+                main.switchToLoginView(); // switch back to login view after creating a user
+            } else {
+                messageLabel.setText("Failed to create user. Username might be taken.");
+            }
         });
+
 
         grid.add(roleLabel, 0, 0);
         grid.add(roleField, 1, 0);
